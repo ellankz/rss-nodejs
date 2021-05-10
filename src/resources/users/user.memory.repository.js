@@ -15,21 +15,25 @@ const users = {
 
 const getAll = async () => Object.values(users);
 
-const getOne = async (id) => users[id];
-
-const createOne = async (userData) => {
-  if (!users[userData.id]) {
-    users[userData.id] = userData;
-    return userData;
+const getOne = async (id) => {
+  if (users[id]) {
+    return users[id];
   }
   return null;
 };
 
-const updateOne = async (userData) => {
-  if (users[userData.id]) {
-    const updatedUser = { ...users[userData.id], ...userData };
-    users[userData.id] = updatedUser;
-    return updatedUser;
+const createOne = async (user) => {
+  if (!users[user.id]) {
+    users[user.id] = user;
+    return user;
+  }
+  return null;
+};
+
+const updateOne = async (user) => {
+  if (users[user.id]) {
+    users[user.id] = user;
+    return user;
   }
   return null;
 };
