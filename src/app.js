@@ -4,6 +4,7 @@ import YAML from 'yamljs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import userRouter from './resources/users/user.router.js';
+import boardRouter from './resources/boards/board.router.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -23,5 +24,6 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/users', userRouter);
+app.use('/boards', boardRouter);
 
 export default app;

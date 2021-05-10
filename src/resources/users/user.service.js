@@ -3,7 +3,7 @@ import User from './user.model.js';
 
 export const getAll = () => usersRepo.getAll();
 
-export const getOne = (id) => usersRepo.getOne(id);
+export const getOne = (userId) => usersRepo.getOne(userId);
 
 export const createOne = (userData) => usersRepo.createOne(new User(userData));
 
@@ -18,4 +18,4 @@ export const updateOne = async (userId, userData) => {
   return usersRepo.updateOne(user);
 };
 
-export const deleteOne = (id) => usersRepo.deleteOne(id);
+export const deleteOne = (userId) => usersRepo.deleteOne(userId);
