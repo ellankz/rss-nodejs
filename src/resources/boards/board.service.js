@@ -1,4 +1,5 @@
 import boardsRepo from './board.memory.repository.js';
+import { deleteAll as deleteAllTasks } from '../tasks/task.service.js';
 import Board from './board.model.js';
 import Column from './column.model.js';
 
@@ -23,4 +24,7 @@ export const updateOne = async (boardId, boardData) => {
   return boardsRepo.updateOne(board);
 };
 
-export const deleteOne = (boardId) => boardsRepo.deleteOne(boardId);
+export const deleteOne = async (boardId) => {
+  await deleteAllTasks(boardId);
+  return boardsRepo.deleteOne(boardId);
+};

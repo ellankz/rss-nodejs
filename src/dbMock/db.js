@@ -42,3 +42,17 @@ export const boards = {
     ],
   },
 };
+
+export const tasks = {
+  'be3b90a2-badd-46de-889c-9c6eebda3446': {
+    '0d66083f-7f7a-4073-906e-8169dbda63ab': {
+      id: '0d66083f-7f7a-4073-906e-8169dbda63ab',
+      title: 'Task from Board 2 Column 2',
+      order: 0,
+      description: 'This task is assigned to ellankz',
+      userId: '56bcf12e-fccc-4c04-bc42-50f1b656654f',
+      boardId: 'be3b90a2-badd-46de-889c-9c6eebda3446',
+      columnId: 'b78bb9e5-8edb-421b-a467-69f4a64fc872',
+    },
+  },
+};

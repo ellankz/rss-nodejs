@@ -13,7 +13,12 @@ router
   .route('/')
   .get(async (req, res) => {
     const boards = await getAll();
-    res.json(boards);
+    if (boards) {
+      res.json(boards);
+    } else {
+      res.status(404);
+      res.json('Not found.');
+    }
   })
   .post(async (req, res) => {
     const board = await createOne(req.body);
@@ -25,7 +30,12 @@ router
   .route('/:boardId')
   .get(async (req, res) => {
     const board = await getOne(req.params.boardId);
-    res.json(board);
+    if (board) {
+      res.json(board);
+    } else {
+      res.status(404);
+      res.json('Not found.');
+    }
   })
   .put(async (req, res) => {
     const board = await updateOne(req.params.boardId, req.body);

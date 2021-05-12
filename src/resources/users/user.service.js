@@ -1,3 +1,4 @@
+import { deleteUser } from '../tasks/task.service.js';
 import usersRepo from './user.memory.repository.js';
 import User from './user.model.js';
 
@@ -18,4 +19,7 @@ export const updateOne = async (userId, userData) => {
   return usersRepo.updateOne(user);
 };
 
-export const deleteOne = (userId) => usersRepo.deleteOne(userId);
+export const deleteOne = async (userId) => {
+  await deleteUser(userId);
+  return usersRepo.deleteOne(userId);
+};
