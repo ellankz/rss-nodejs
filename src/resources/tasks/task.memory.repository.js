@@ -46,9 +46,9 @@ const deleteAll = async (boardId) => {
 
 const deleteUser = (userId) => {
   Object.values(tasks).forEach((board) => {
-    Object.values(board).forEach((task) => {
+    Object.values(board).forEach((paramTask) => {
+      const task = paramTask;
       if (task.userId === userId) {
-        // eslint-disable-next-line no-param-reassign
         task.userId = null;
       }
     });
