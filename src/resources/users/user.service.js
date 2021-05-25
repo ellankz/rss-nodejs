@@ -1,5 +1,25 @@
-const usersRepo = require('./user.memory.repository');
+import { deleteUser } from '../tasks/task.service.js';
+import usersRepo from './user.memory.repository.js';
+import User from './user.model.js';
 
-const getAll = () => usersRepo.getAll();
+export const getAll = () => usersRepo.getAll();
 
-module.exports = { getAll };
+export const getOne = (userId) => usersRepo.getOne(userId);
+
+export const createOne = (userData) => usersRepo.createOne(new User(userData));
+
+export const updateOne = async (userId, userData) => {
+  const user = await getOne(userId);
+  const props = Object.getOwnPropertyNames(user);
+  props.forEach((prop) => {
+    if (prop !== 'id' && !!userData[prop]) {
+      user[prop] = userData[prop];
+    }
+  });
+  return usersRepo.updateOne(user);
+};
+
+export const deleteOne = async (userId) => {
+  await deleteUser(userId);
+  return usersRepo.deleteOne(userId);
+};
