@@ -12,5 +12,4 @@ export const {
   JWT_SECRET_KEY,
 } = process.env;
 
-// eslint-disable-next-line dot-notation
 export const AUTH_MODE: boolean = process.env['AUTH_MODE'] === 'true';
