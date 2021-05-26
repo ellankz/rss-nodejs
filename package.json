@@ -5,7 +5,6 @@
     "type": "git",
     "url": ""
   },
-  "type": "module",
   "description": "REST service starter for RS School",
   "main": "src/server.js",
   "scripts": {
