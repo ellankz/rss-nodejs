@@ -4,7 +4,6 @@
     "module": "commonjs", 
     "allowJs": false,
     "outDir": "./build",
-    "rootDir": "./",
     "downlevelIteration": false,
     "strict": true,
     "noUnusedLocals": true,
