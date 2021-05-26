@@ -1,36 +1,48 @@
 import express from 'express';
-import User from './user.model.js';
+import User from './user.model';
 import {
   createOne,
   deleteOne,
   getAll,
   getOne,
   updateOne,
-} from './user.service.js';
+} from './user.service';
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(async (req, res) => {
+  .get(async (_req, res) => {
     const users = await getAll();
     res.json(users.map(User.toResponse));
   })
   .post(async (req, res) => {
     const user = await createOne(req.body);
-    res.status(201);
-    res.json(User.toResponse(user));
+    if (user) {
+      res.status(201);
+      res.json(User.toResponse(user));
+    } else {
+      // TODO: handle error here
+    }
   });
 
 router
   .route('/:userId')
   .get(async (req, res) => {
     const user = await getOne(req.params.userId);
-    res.json(User.toResponse(user));
+    if (user) {
+      res.json(User.toResponse(user));
+    } else {
+      // TODO: handle error here
+    }
   })
   .put(async (req, res) => {
     const user = await updateOne(req.params.userId, req.body);
-    res.json(User.toResponse(user));
+    if (user) {
+      res.json(User.toResponse(user));
+    } else {
+      // TODO: handle error here
+    }
   })
   .delete(async (req, res) => {
     const isDeleted = await deleteOne(req.params.userId);

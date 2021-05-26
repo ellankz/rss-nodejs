@@ -5,13 +5,13 @@ import {
   getAll,
   getOne,
   updateOne,
-} from './board.service.js';
+} from './board.service';
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(async (req, res) => {
+  .get(async (_req, res) => {
     const boards = await getAll();
     if (boards) {
       res.json(boards);

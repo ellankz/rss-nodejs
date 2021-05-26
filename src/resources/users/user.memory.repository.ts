@@ -1,15 +1,16 @@
-import { users } from '../../dbMock/db.js';
+import { users } from '../../dbMock/db';
+import User from './user.model';
 
 const getAll = async () => Object.values(users);
 
-const getOne = async (id) => {
+const getOne = async (id: string) => {
   if (users[id]) {
     return users[id];
   }
   return null;
 };
 
-const createOne = async (user) => {
+const createOne = async (user: User) => {
   if (!users[user.id]) {
     users[user.id] = user;
     return user;
@@ -17,7 +18,7 @@ const createOne = async (user) => {
   return null;
 };
 
-const updateOne = async (user) => {
+const updateOne = async (user: User) => {
   if (users[user.id]) {
     users[user.id] = user;
     return user;
@@ -25,7 +26,7 @@ const updateOne = async (user) => {
   return null;
 };
 
-const deleteOne = async (id) => {
+const deleteOne = async (id: string) => {
   if (users[id]) {
     delete users[id];
     return true;
@@ -33,4 +34,6 @@ const deleteOne = async (id) => {
   return null;
 };
 
-export default { getAll, getOne, createOne, updateOne, deleteOne };
+export default {
+  getAll, getOne, createOne, updateOne, deleteOne,
+};

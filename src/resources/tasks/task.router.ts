@@ -5,12 +5,12 @@ import {
   getAll,
   getOne,
   updateOne,
-} from './task.service.js';
+} from './task.service';
 
 const router = express.Router({ mergeParams: true });
 
 router
-  .route('/')
+  .route('/:boardId/tasks/')
   .get(async (req, res) => {
     const tasks = await getAll(req.params.boardId);
     if (tasks) {
@@ -27,7 +27,7 @@ router
   });
 
 router
-  .route('/:taskId')
+  .route('/:boardId/tasks/:taskId')
   .get(async (req, res) => {
     const task = await getOne(req.params.boardId, req.params.taskId);
     if (task) {
@@ -41,14 +41,19 @@ router
     const task = await updateOne(
       req.params.boardId,
       req.params.taskId,
-      req.body
+      req.body,
     );
     res.json(task);
   })
   .delete(async (req, res) => {
-    const isDeleted = await deleteOne(req.params.boardId, req.params.taskId);
-    if (isDeleted) {
-      res.status(204).json({ Error: 'Task has been deleted' });
+    const { boardId, taskId } = req.params;
+    if (boardId && taskId) {
+      const isDeleted = await deleteOne(boardId, taskId);
+      if (isDeleted) {
+        res.status(204).json({ Error: 'Task has been deleted' });
+      } else {
+        res.status(404).json({ Error: 'Not found' });
+      }
     } else {
       res.status(404).json({ Error: 'Not found' });
     }
