@@ -10,6 +10,8 @@ export const {
   NODE_ENV,
   MONGO_CONNECTION_STRING,
   JWT_SECRET_KEY,
+  AUTH_MODE: AUTH
 } = process.env;
 
-export const AUTH_MODE: boolean = process.env.AUTH_MODE === 'true';
+
+export const AUTH_MODE : boolean = AUTH === 'true';
