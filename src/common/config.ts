@@ -12,4 +12,4 @@ export const {
   JWT_SECRET_KEY,
 } = process.env;
 
-export const AUTH_MODE: boolean = process.env['AUTH_MODE'] === 'true';
+export const AUTH_MODE: boolean = process.env.AUTH_MODE === 'true';

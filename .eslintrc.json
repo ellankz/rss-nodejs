@@ -34,8 +34,7 @@
     "@typescript-eslint/no-unused-vars": 0,
     "node/no-missing-import": ["error", {
       "tryExtensions": [".js", ".json", ".ts"]
-    }],
-    "dot-notation": "off"
+    }]
    },
   "parser": "@typescript-eslint/parser",
   "plugins": [
