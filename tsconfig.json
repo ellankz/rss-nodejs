@@ -4,7 +4,7 @@
     "module": "commonjs", 
     "allowJs": false,
     "outDir": "./build",
-    "rootDir": ".",
+    "rootDir": "./src",
     "downlevelIteration": false,
     "strict": true,
     "noUnusedLocals": true,
@@ -32,7 +32,4 @@
   "include": [
     "src"
   ],
-  "files": [
-    "src/app.ts"
-  ]
 }
