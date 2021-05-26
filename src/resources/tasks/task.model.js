@@ -1,18 +1,6 @@
 import { v4 as uuid } from 'uuid';
-/**
- * Class representing a task
- */
+
 class Task {
-  /**
-   * Create a task.
-   * @param {string} id - id
-   * @param {string} title - Title
-   * @param {number} order - Order
-   * @param {string} description - Description
-   * @param {string} userId - assignee id
-   * @param {string} boardId - board id
-   * @param {string} columnId - column id
-   */
   constructor({
     id = uuid(),
     title = 'Task',
