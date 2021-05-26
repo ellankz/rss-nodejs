@@ -4,13 +4,13 @@ import Board from './board.model';
 import Column from './column.model';
 import { BoardBody } from './board.types';
 
-export const getAll = () => boardsRepo.getAll();
+export const getAll = (): Promise<Board[]> => boardsRepo.getAll();
 
-export const getOne = (boardId: string) => boardsRepo.getOne(boardId);
+export const getOne = (boardId: string): Promise<Board | null> => boardsRepo.getOne(boardId);
 
-export const createOne = (boardData: BoardBody) => boardsRepo.createOne(new Board(boardData));
+export const createOne = (boardData: BoardBody): Promise<Board | null> => boardsRepo.createOne(new Board(boardData));
 
-export const updateOne = async (boardId: string, boardData: BoardBody) => {
+export const updateOne = async (boardId: string, boardData: BoardBody): Promise<Board | null> => {
   const board = await getOne(boardId);
 
   if (!board) return null;
@@ -27,7 +27,7 @@ export const updateOne = async (boardId: string, boardData: BoardBody) => {
   return boardsRepo.updateOne(board);
 };
 
-export const deleteOne = async (boardId: string) => {
+export const deleteOne = async (boardId: string): Promise<true | null> => {
   await deleteAllTasks(boardId);
   return boardsRepo.deleteOne(boardId);
 };

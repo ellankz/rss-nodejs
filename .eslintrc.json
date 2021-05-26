@@ -23,6 +23,7 @@
     "eslint:recommended",
     "plugin:node/recommended",
     "airbnb-base",
+    "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
   "rules": {

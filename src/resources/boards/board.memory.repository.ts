@@ -1,16 +1,14 @@
 import { boards } from '../../dbMock/db';
 import Board from './board.model';
 
-const getAll = async () => Object.values(boards);
+const getAll = async (): Promise<Board[]> => Object.values(boards);
 
-const getOne = async (id: string) => {
-  if (id && boards[id]) {
-    return boards[id];
-  }
-  return null;
+const getOne = async (id: string): Promise<Board | null>  => {
+  const board = boards[id];
+  return board || null;
 };
 
-const createOne = async (board: Board) => {
+const createOne = async (board: Board): Promise<Board | null> => {
   if (board && !boards[board.id]) {
     boards[board.id] = board;
     return board;
@@ -18,7 +16,7 @@ const createOne = async (board: Board) => {
   return null;
 };
 
-const updateOne = async (board: Board) => {
+const updateOne = async (board: Board): Promise<Board | null> => {
   if (board && boards[board.id]) {
     boards[board.id] = board;
     return board;
@@ -26,7 +24,7 @@ const updateOne = async (board: Board) => {
   return null;
 };
 
-const deleteOne = async (id: string) => {
+const deleteOne = async (id: string): Promise<true | null> => {
   if (id && boards[id]) {
     delete boards[id];
     return true;
