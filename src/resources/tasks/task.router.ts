@@ -1,6 +1,7 @@
 import express from 'express';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { ErrorHandler } from '../../errors/error';
+import { logResponse } from '../../logging/winston.logger';
 import {
   createOne,
   deleteOne,
@@ -17,6 +18,7 @@ router
     try {
       const tasks = await getAll(req.params.boardId);
       if (tasks) {
+        logResponse(res);
         res.json(tasks);
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
@@ -33,7 +35,8 @@ router
 
       const task = await createOne(req.params.boardId, req.body);
       if (task) {
-        res.status(201);
+        res.status(StatusCodes.CREATED);
+        logResponse(res);
         res.json(task);
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
@@ -49,6 +52,7 @@ router
     try {
       const task = await getOne(req.params.boardId, req.params.taskId);
       if (task) {
+        logResponse(res);
         res.json(task);
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
@@ -68,6 +72,7 @@ router
         req.body,
       );
       if (task) {
+        logResponse(res);
         res.json(task);
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
@@ -82,7 +87,9 @@ router
       if (boardId && taskId) {
         const isDeleted = await deleteOne(boardId, taskId);
         if (isDeleted) {
-          res.status(204).send('Task has been deleted');
+          res.status(StatusCodes.NO_CONTENT)
+          logResponse(res);
+          res.send('Task has been deleted');
         } else {
           throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
         }

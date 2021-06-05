@@ -1,6 +1,7 @@
 import express from 'express';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { ErrorHandler } from '../../errors/error';
+import { logResponse } from '../../logging/winston.logger';
 import {
   createOne,
   deleteOne,
@@ -17,6 +18,7 @@ router
     try {
       const boards = await getAll();
       if (boards) {
+        logResponse(res);
         res.json(boards);
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
@@ -33,7 +35,8 @@ router
         throw new ErrorHandler(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST);
       }
       const board = await createOne(req.body);
-      res.status(201);
+      res.status(StatusCodes.CREATED);
+      logResponse(res);
       res.json(board);
     } catch (error) {
       next(error);
@@ -46,6 +49,7 @@ router
     try {
       const board = await getOne(req.params.boardId);
       if (board) {
+        logResponse(res); 
         res.json(board);
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND)
@@ -69,6 +73,7 @@ router
       if (!board) {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
       }
+      logResponse(res);
       res.json(board);
     } catch (error) {
       next(error);
@@ -78,7 +83,9 @@ router
     try {
       const isDeleted = await deleteOne(req.params.boardId);
       if (isDeleted) {
-        res.status(204).send('Board has been deleted');
+        res.status(StatusCodes.NO_CONTENT);
+        logResponse(res);
+        res.send('Board has been deleted');
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
       }

@@ -2,6 +2,7 @@ import express from 'express';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { ErrorHandler } from '../../errors/error';
 import { includesAll, includesSome } from '../../helpers/testParamsValid';
+import { logResponse } from '../../logging/winston.logger';
 import User from './user.model';
 import {
   createOne,
@@ -19,6 +20,7 @@ router
     try {
       const users = await getAll();
       if (users) {
+        logResponse(res);
         res.json(users.map(User.toResponse));
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
@@ -36,6 +38,7 @@ router
         const user = await createOne(req.body);
         if (user) {
           res.status(StatusCodes.CREATED);
+          logResponse(res);
           res.json(User.toResponse(user));
         }
       }
@@ -50,6 +53,7 @@ router
     try {
       const user = await getOne(req.params.userId);
       if (user) {
+        logResponse(res);
         res.json(User.toResponse(user));
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
@@ -65,6 +69,7 @@ router
       } 
       const user = await updateOne(req.params.userId, req.body);
       if (user) {
+        logResponse(res);
         res.json(User.toResponse(user));
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
@@ -77,7 +82,9 @@ router
     try {
       const isDeleted = await deleteOne(req.params.userId);
       if (isDeleted) {
-        res.sendStatus(StatusCodes.NO_CONTENT);
+        res.status(StatusCodes.NO_CONTENT);
+        logResponse(res);
+        res.send();
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
       }

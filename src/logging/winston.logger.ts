@@ -30,6 +30,10 @@ export const logRequest = (req: Request, _res: Response, next: NextFunction): vo
   next();
 };
 
+export const logResponse = (res: Response) => {
+  logger.info(`Response status: ${res.statusCode}`);
+}
+
 export const logError = (err: Error | ErrorHandler): void => {
   const statusCode = err instanceof ErrorHandler ? err.statusCode : '500';
   const message = err instanceof ErrorHandler ? err.message : 'Internal server error';
