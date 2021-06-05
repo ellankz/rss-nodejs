@@ -58,7 +58,10 @@ router
     try {
       const {title, columns} = req.body;
       const boardValid = title || (columns && Array.isArray(columns));
-      const columnsValid = !columns || (Array.isArray(columns) && columns.every((column: {[key: string]: string}) => !!column['title']));
+      const columnsValid = !columns || 
+      (Array.isArray(columns) && columns.every((column: {[key: string]: string}) => {
+        return column['title'] && typeof column['order'] === 'number' && column['id'];
+      }));
       if (!boardValid || !columnsValid) {
         throw new ErrorHandler(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST);
       }
