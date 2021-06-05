@@ -66,6 +66,8 @@ router
       const user = await updateOne(req.params.userId, req.body);
       if (user) {
         res.json(User.toResponse(user));
+      } else {
+        throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
       }
     } catch (error) {
       next(error);

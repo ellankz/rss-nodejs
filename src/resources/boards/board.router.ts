@@ -60,7 +60,7 @@ router
       const boardValid = title || (columns && Array.isArray(columns));
       const columnsValid = !columns || 
       (Array.isArray(columns) && columns.every((column: {[key: string]: string}) => {
-        return column['title'] && typeof column['order'] === 'number' && column['id'];
+        return column['title'] && typeof column['order'] === 'number';
       }));
       if (!boardValid || !columnsValid) {
         throw new ErrorHandler(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST);
@@ -78,7 +78,7 @@ router
     try {
       const isDeleted = await deleteOne(req.params.boardId);
       if (isDeleted) {
-        res.status(204).json({ Error: 'Board has been deleted' });
+        res.status(204).send('Board has been deleted');
       } else {
         throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
       }
