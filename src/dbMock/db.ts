@@ -1,4 +1,9 @@
-export const users = {
+import Board from '../resources/boards/board.model';
+import Task from '../resources/tasks/task.model';
+import User from '../resources/users/user.model';
+import { dbData } from './db.types';
+
+export const users: dbData<User> = {
   '56bcf12e-fccc-4c04-bc42-50f1b656654f': {
     id: '56bcf12e-fccc-4c04-bc42-50f1b656654f',
     name: 'Elena',
@@ -13,7 +18,7 @@ export const users = {
   },
 };
 
-export const boards = {
+export const boards: dbData<Board> = {
   '8d6fc546-335b-4bf2-b804-fdbe11120671': {
     id: '8d6fc546-335b-4bf2-b804-fdbe11120671',
     title: 'Board 1',
@@ -43,7 +48,7 @@ export const boards = {
   },
 };
 
-export const tasks = {
+export const tasks: {[key: string]: dbData<Task>} = {
   'be3b90a2-badd-46de-889c-9c6eebda3446': {
     '0d66083f-7f7a-4073-906e-8169dbda63ab': {
       id: '0d66083f-7f7a-4073-906e-8169dbda63ab',
