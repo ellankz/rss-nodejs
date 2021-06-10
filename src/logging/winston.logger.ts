@@ -30,7 +30,7 @@ export const logRequest = (req: Request, _res: Response, next: NextFunction): vo
   next();
 };
 
-export const logResponse = (res: Response) => {
+export const logResponse = (res: Response): void => {
   logger.info(`Response status: ${res.statusCode}`);
 }
 

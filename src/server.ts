@@ -5,7 +5,7 @@ import { ErrorHandler } from './errors/error';
 
 process
   .on('unhandledRejection', reason => {
-    const message = `Unhandled Rejection at Promise: ${reason instanceof Error ? reason.message : 'unknow error'}` 
+    const message = `Unhandled Rejection at Promise: ${reason instanceof Error ? reason.message : 'unknow error'}`
     logError(new ErrorHandler(500, `Unhandled Rejection at Promise: ${message}`));
     process.exit(1);
   })
