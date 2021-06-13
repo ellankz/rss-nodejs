@@ -18,7 +18,7 @@ export const updateOne = async (boardId: string, taskId: string, taskData: TaskB
   const task = await getOne(boardId, taskId);
 
   if (task) {
-    const newTask = new Task({ ...task, ...taskData, id: taskId });
+    const newTask = new Task({ ...task, ...taskData, id: taskId, boardId });
     return tasksRepo.updateOne(boardId, newTask);
   }
   return null;

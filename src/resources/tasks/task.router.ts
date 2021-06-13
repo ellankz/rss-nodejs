@@ -1,4 +1,7 @@
 import express from 'express';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
+import { ErrorHandler } from '../../errors/error';
+import { logResponse } from '../../logging/winston.logger';
 import {
   createOne,
   deleteOne,
@@ -11,51 +14,90 @@ const router = express.Router({ mergeParams: true });
 
 router
   .route('/:boardId/tasks/')
-  .get(async (req, res) => {
-    const tasks = await getAll(req.params.boardId);
-    if (tasks) {
-      res.json(tasks);
-    } else {
-      res.status(404);
-      res.json('Not found.');
+  .get(async (req, res, next) => {
+    try {
+      const tasks = await getAll(req.params.boardId);
+      if (tasks) {
+        logResponse(res);
+        res.json(tasks);
+      } else {
+        throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
+      }
+    } catch(error) {
+      next(error);
     }
   })
-  .post(async (req, res) => {
-    const task = await createOne(req.params.boardId, req.body);
-    res.status(201);
-    res.json(task);
+  .post(async (req, res, next) => {
+    try {
+      if (!req.body.title) {
+        throw new ErrorHandler(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST);
+      } 
+
+      const task = await createOne(req.params.boardId, req.body);
+      if (task) {
+        res.status(StatusCodes.CREATED);
+        logResponse(res);
+        res.json(task);
+      } else {
+        throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
+      }
+    } catch(error) {
+      next(error);
+    }
   });
 
 router
   .route('/:boardId/tasks/:taskId')
-  .get(async (req, res) => {
-    const task = await getOne(req.params.boardId, req.params.taskId);
-    if (task) {
-      res.json(task);
-    } else {
-      res.status(404);
-      res.json('Not found.');
+  .get(async (req, res, next) => {
+    try {
+      const task = await getOne(req.params.boardId, req.params.taskId);
+      if (task) {
+        logResponse(res);
+        res.json(task);
+      } else {
+        throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
+      }
+    } catch(error) {
+      next(error);
     }
   })
-  .put(async (req, res) => {
-    const task = await updateOne(
-      req.params.boardId,
-      req.params.taskId,
-      req.body,
-    );
-    res.json(task);
-  })
-  .delete(async (req, res) => {
-    const { boardId, taskId } = req.params;
-    if (boardId && taskId) {
-      const isDeleted = await deleteOne(boardId, taskId);
-      if (isDeleted) {
-        res.status(204).json({ Error: 'Task has been deleted' });
-      } else {
-        res.status(404).json({ Error: 'Not found' });
+  .put(async (req, res, next) => {
+    try {
+      if (!req.body.title){
+        throw new ErrorHandler(StatusCodes.BAD_REQUEST, ReasonPhrases.BAD_REQUEST);
       }
-    } else {
-      res.status(404).json({ Error: 'Not found' });
+      const task = await updateOne(
+        req.params.boardId,
+        req.params.taskId,
+        req.body,
+      );
+      if (task) {
+        logResponse(res);
+        res.json(task);
+      } else {
+        throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
+      }
+    } catch(error) {
+      next(error);
+    }
+  })
+  .delete(async (req, res, next) => {
+    try {
+      const { boardId, taskId } = req.params;
+      if (boardId && taskId) {
+        const isDeleted = await deleteOne(boardId, taskId);
+        if (isDeleted) {
+          res.status(StatusCodes.NO_CONTENT)
+          logResponse(res);
+          res.send('Task has been deleted');
+        } else {
+          throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
+        }
+      } else {
+        throw new ErrorHandler(StatusCodes.NOT_FOUND, ReasonPhrases.NOT_FOUND);
+      }
+    } catch(error) {
+      next(error);
     }
   });
 

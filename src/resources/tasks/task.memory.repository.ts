@@ -2,15 +2,12 @@ import { tasks } from '../../dbMock/db';
 import Task from './task.model';
 
 const getAll = async (boardId: string): Promise<Task[] | null> => {
-  const tasksObj = tasks[boardId];
-  if (tasksObj) {
-    return Object.values(tasksObj);
-  }
-  return null;
+  const tasksObj = tasks[boardId] || {};
+  return Object.values(tasksObj);
 };
 
 const getOne = async (boardId: string, taskId: string): Promise<Task | null> => {
-  const board = tasks[boardId];
+  const board = tasks[boardId] || {};
   const task = board ? board[taskId] : null;
   if (tasks && board && task) {
     return task;
