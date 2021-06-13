@@ -3,7 +3,11 @@
 1. Setup
 ```
 $ git clone https://github.com/ellankz/rss-nodejs
+```
+```
 $ cd rss-nodejs
+```
+```
 $ git checkout Task-6-Docker-basics
 ```
 
