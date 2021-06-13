@@ -1,72 +1,27 @@
-# RS School REST service
+## How to run the app in Docker containers
 
-## Prerequisites
-
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
-
-## Downloading
-
+1. Setup
 ```
-git clone {repository URL}
+$ git clone https://github.com/ellankz/rss-nodejs
+$ cd rss-nodejs
+$ git checkout Task-6-Docker-basics
 ```
 
-## Installing NPM modules
+2. Create .env file in the project folder with following data:
+```
+NODE_ENV=development
+PORT=8080
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=postgres
 
 ```
-npm install
+3. Build and run docker containers:
+```
+$ docker-compose up
 ```
 
-## Running application
+After this the app should be running on port 8080 and be accessible via url http://localhost:8080/
 
-```
-npm start
-```
-
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
-
-## Testing
-
-After application running open new terminal and enter:
-
-To run all tests without authorization
-
-```
-npm test
-```
-
-To run only one of all test suites (users, boards or tasks)
-
-```
-npm test <suite name>
-```
-
-To run all test with authorization
-
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization (users, boards or tasks)
-
-```
-npm run test:auth <suite name>
-```
-
-## Development
-
-If you're using VSCode, you can get a better developer experience from integration with [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions.
-
-### Auto-fix and format
-
-```
-npm run lint
-```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
+!! If you want to test whether app is restarted upon crash you can send a GET request via Postman to http://localhost:8080/exit (Don't do this in browser, it will keep repeating the request after each app restart).
