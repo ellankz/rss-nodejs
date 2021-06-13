@@ -26,6 +26,10 @@ app.use('/', (req, res, next) => {
   next();
 });
 
+app.use('/exit', () => {
+  process.exit(1);
+});
+
 app.use('/users', userRouter);
 app.use('/boards', taskRouter);
 app.use('/boards', boardRouter);

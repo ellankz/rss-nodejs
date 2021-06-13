@@ -11,6 +11,7 @@ services:
     restart: always
     volumes:
       - ./logs:/usr/app/log/
+      - ./src:/usr/app/src/
     networks:
       - appNetwork
   postgres:
