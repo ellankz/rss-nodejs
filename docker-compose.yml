@@ -2,12 +2,13 @@ version: '3'
 services:
   node:
     build: .
+    image: ellankz/node-app:latest
     ports:
       - ${PORT}:${PORT}
     depends_on:
       - postgres
     environment:
-      - PORT=8080
+      - PORT=${PORT}
     restart: always
     volumes:
       - ./logs:/usr/app/log/
@@ -16,6 +17,7 @@ services:
       - appNetwork
   postgres:
     build: ./database
+    image: ellankz/node-app-postgres:latest
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
