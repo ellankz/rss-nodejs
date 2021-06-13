@@ -10,7 +10,6 @@ services:
       - PORT=8080
     restart: always
     volumes:
-      - ./src:/usr/app/src/
       - ./logs:/usr/app/log/
     networks:
       - appNetwork
