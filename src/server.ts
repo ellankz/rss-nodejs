@@ -1,7 +1,41 @@
+import { getConnection, createConnection } from 'typeorm';
 import { PORT } from './common/config';
 import app from './app';
 import { logError } from './logging/winston.logger';
 import { ErrorHandler } from './errors/error';
+import { config } from './common/ormconfig';
+
+const connectToDB = async () => {
+  let connection;
+  try {
+    connection = await getConnection();
+  } catch (error) {
+    console.error(error);
+  }
+
+  try {
+    if (connection) {
+      if (!connection.isConnected) {
+        await connection.connect();
+      } else {
+        createConnection(config);
+      }
+    }
+    console.log('Connected to database');
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const tryDBConnect = async (cb: () => void) => {
+  try {
+    await connectToDB();
+    cb();
+  } catch(error){
+    console.error(error);
+    
+  }
+}
 
 process
   .on('unhandledRejection', reason => {
@@ -14,4 +48,5 @@ process
     process.exit(1);
   });
 
-app.listen(PORT, () => process.stdout.write(`App is running on http://localhost:${PORT}\n`));
+  tryDBConnect(() => app.listen(PORT, () => process.stdout.write(`App is running on http://localhost:${PORT}\n`)));
+
