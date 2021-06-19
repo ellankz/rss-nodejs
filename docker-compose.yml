@@ -33,5 +33,3 @@ services:
       - appNetwork
 networks:
   appNetwork:
-volumes:
-  pgdata:
