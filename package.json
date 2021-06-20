@@ -14,7 +14,11 @@
     "dev": "nodemon --exitcrash src/server.ts",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
-    "doc": "./node_modules/.bin/jsdoc -r src"
+    "doc": "./node_modules/.bin/jsdoc -r src",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
+    "migration:generate": "npm run typeorm -- migration:generate --config src/common/ormconfig.ts --name 'CreateTable'",
+    "migration:create": "npm run typeorm -- migration:create --config src/common/ormconfig.ts --name 'CreateTable'",
+    "migration:run": "npm run typeorm -- migration:run --config src/common/ormconfig.ts"
   },
   "keywords": [
     "rs",
