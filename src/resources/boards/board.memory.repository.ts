@@ -29,25 +29,20 @@ const updateOne = async (boardId: string, boardData: Partial<Board>): Promise<Bo
   const boardRepository = getRepository(Board);
   const columnRepository = getRepository(Column);
   const oldBoard = await boardRepository.findOne(boardId, { relations: ["columns"] });
-  const { columns, title } = boardData;
-  let newCols: Column[] = [];
-  if (columns) {
-    oldBoard?.columns?.forEach(async (col) => {
-      await columnRepository.delete(col.id);
-    });
-    newCols = await Promise.all(columns.map(async (col) => {
-      const newCol = columnRepository.create(col);
-      await columnRepository.save(newCol);
-      return newCol;
-    }));
+  const { columns = [], title } = boardData;
+  const deleteResults = oldBoard?.columns?.map((col) =>  columnRepository.delete(col.id));
+  if (deleteResults) {
+    await Promise.all(deleteResults);
   }
+  const newCols = columns.map((col) => columnRepository.create(col));
   if (title) {
-    const board = await boardRepository.findOne(boardId, { relations: ["columns"] });
+    const board = await boardRepository.findOne(boardId);
     if (board) {
       await boardRepository.update(boardId, {title});
     }
   }
-  const board = await boardRepository.findOne(boardId, { relations: ["columns"] });
+  const board = await boardRepository.findOne(boardId);
+  await columnRepository.save(newCols);
   if (board) {
     board.columns = newCols;
     return boardRepository.save(board);

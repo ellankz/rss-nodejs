@@ -56,7 +56,7 @@ const deleteUser = async (userId: string): Promise<void> => {
   const repository = getRepository(Task);
   const tasks = await repository.find({where: {userId}});
   await Promise.all(tasks.map(async (task) => {
-    await repository.delete(task.id);
+    await repository.update(task.id, {...task, userId: null});
   }));
 };
 
