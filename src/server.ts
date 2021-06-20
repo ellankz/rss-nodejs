@@ -4,14 +4,23 @@ import { logError } from './logging/winston.logger';
 import { ErrorHandler } from './errors/error';
 import {config, PORT} from './ormconfig';
 
-;
+process
+  .on('unhandledRejection', reason => {
+    const message = `Unhandled Rejection at Promise: ${reason instanceof Error ? reason.message : 'unknow error'}`
+    logError(new ErrorHandler(500, `Unhandled Rejection at Promise: ${message}`));
+    process.exit(1);
+  })
+  .on('uncaughtException', err => {
+    logError(new ErrorHandler(500, `Uncaught Exception: ${err.message}`));
+    process.exit(1);
+  });
 
 const connectToDB = async () => {
   let connection;
   try {
     connection = getConnection();
   } catch (error) {
-    console.error(error);
+    // console.error(error);
   }
 
   try {
@@ -38,16 +47,7 @@ const tryDBConnect = async (cb: () => void) => {
   }
 }
 
-process
-  .on('unhandledRejection', reason => {
-    const message = `Unhandled Rejection at Promise: ${reason instanceof Error ? reason.message : 'unknow error'}`
-    logError(new ErrorHandler(500, `Unhandled Rejection at Promise: ${message}`));
-    process.exit(1);
-  })
-  .on('uncaughtException', err => {
-    logError(new ErrorHandler(500, `Uncaught Exception: ${err.message}`));
-    process.exit(1);
-  });
+
 
   tryDBConnect(() => app.listen(PORT, () => process.stdout.write(`App is running on http://localhost:${PORT}\n`)));
 

@@ -21,6 +21,6 @@ export class Task implements ITask {
   @Column('uuid')
   boardId!: string;
 
-  @Column('uuid')
+  @Column('uuid', {nullable: true})
   columnId!: string;
 }

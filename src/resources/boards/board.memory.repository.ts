@@ -19,9 +19,7 @@ const createOne = async (boardData: Partial<Board>): Promise<Board | undefined> 
   const newBoard = boardRepository.create(boardData);
   if (columns) {
     const newColumns = columns.map((col) => columnRepository.create({...col}));
-
     newBoard.columns = await columnRepository.save(newColumns);
-    console.log(newBoard);
   }
   await boardRepository.save(newBoard);
   return boardRepository.findOne(newBoard.id, { relations: ["columns"] });
@@ -40,10 +38,8 @@ const updateOne = async (boardId: string, boardData: Partial<Board>): Promise<Bo
     newCols = await Promise.all(columns.map(async (col) => {
       const newCol = columnRepository.create(col);
       await columnRepository.save(newCol);
-      console.log(newCol);
       return newCol;
     }));
-    // console.log(newCols);
   }
   if (title) {
     const board = await boardRepository.findOne(boardId, { relations: ["columns"] });

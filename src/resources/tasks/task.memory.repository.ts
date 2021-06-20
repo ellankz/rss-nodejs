@@ -1,65 +1,63 @@
-import { tasks } from '../../dbMock/db';
-import Task from './task.model';
+import { getRepository } from "typeorm";
+import { Task } from "../../entities/Task";
 
-const getAll = async (boardId: string): Promise<Task[] | null> => {
-  const tasksObj = tasks[boardId] || {};
-  return Object.values(tasksObj);
+const getAll = async (boardId: string): Promise<Task[]> => {
+  const repository = getRepository(Task);
+  return repository.find({ where: { boardId }});
 };
 
-const getOne = async (boardId: string, taskId: string): Promise<Task | null> => {
-  const board = tasks[boardId] || {};
-  const task = board ? board[taskId] : null;
-  if (tasks && board && task) {
-    return task;
+const getOne = async (boardId: string, taskId: string): Promise<Task | undefined> => {
+  const repository = getRepository(Task);
+  return repository.findOne(taskId, { where: { boardId }});
+};
+
+const createOne = async (boardId: string, task: Partial<Task>): Promise<Task> => {
+  const repository = getRepository(Task);
+  const newTask = repository.create({...task, boardId});
+  return repository.save(newTask);
+};
+
+const updateOne = async (boardId: string, taskId: string, task: Partial<Task>): Promise<Task | undefined> => {
+  const repository = getRepository(Task);
+  const oldBoard = await repository.findOne(taskId, { where: { boardId } });
+  if (oldBoard) {
+    const updateRes = await repository.update(taskId, task);
+    return updateRes.raw;
   }
-  return null;
+  return undefined;
 };
 
-const createOne = async (boardId: string, task: Task): Promise<Task | null> => {
-  const board = tasks[boardId] || {};
-  tasks[boardId] = board;
-  if (task.id && !board[task.id]) {
-    board[task.id] = task;
-    return task;
-  }
-  return null;
-};
-
-const updateOne = async (boardId: string, task: Task): Promise<Task | null> => {
-  const board = tasks[boardId];
-  if (board && task.id && board[task.id]) {
-    board[task.id] = task;
-    return task;
-  }
-  return null;
-};
-
-const deleteOne = async (boardId: string, taskId: string): Promise<true | null> => {
-  const board = tasks[boardId];
-  if (board && board[taskId]) {
-    delete board[taskId];
+const deleteOne = async (_boardId: string, taskId: string): Promise<true | undefined> => {
+  const repository = getRepository(Task);
+  const deleteRes = await repository.delete(taskId)
+  if (deleteRes.affected) {
     return true;
   }
-  return null;
+  return undefined;
 };
 
-const deleteAll = async (boardId: string): Promise<true | null> => {
-  if (tasks[boardId]) {
-    delete tasks[boardId];
-    return true;
+const deleteAll = async (boardId: string): Promise<true | undefined> => {
+  const repository = getRepository(Task);
+  const toDelete = await repository.find({where: {boardId}});
+  try {
+    const deleted = await Promise.all(toDelete.map(async (task) => {
+      await repository.delete(task.id);
+    }));
+    if (deleted) {
+      return true;
+    }
+  } catch (error) {
+    return undefined;
   }
-  return null;
+  return undefined;
 };
 
 const deleteUser = async (userId: string): Promise<void> => {
-  Object.values(tasks).forEach((board) => {
-    Object.values(board).forEach((paramTask) => {
-      const task = paramTask;
-      if (task.userId === userId) {
-        task.userId = null;
-      }
-    });
-  });
+  const repository = getRepository(Task);
+  const tasks = await repository.find({where: {userId}});
+  await Promise.all(tasks.map(async (task) => {
+    await repository.delete(task.id);
+  }));
 };
 
 export default {
