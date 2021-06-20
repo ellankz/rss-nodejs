@@ -1,26 +1,18 @@
+/* eslint-disable no-console */
 import { getConnection, createConnection } from 'typeorm';
 import app from './app';
 import { logError } from './logging/winston.logger';
 import { ErrorHandler } from './errors/error';
 import {config, PORT} from './ormconfig';
 
-process
-  .on('unhandledRejection', reason => {
-    const message = `Unhandled Rejection at Promise: ${reason instanceof Error ? reason.message : 'unknow error'}`
-    logError(new ErrorHandler(500, `Unhandled Rejection at Promise: ${message}`));
-    process.exit(1);
-  })
-  .on('uncaughtException', err => {
-    logError(new ErrorHandler(500, `Uncaught Exception: ${err.message}`));
-    process.exit(1);
-  });
+
 
 const connectToDB = async () => {
   let connection;
   try {
     connection = getConnection();
-  } catch {
-    process.stdout.write('Connection hasn\'t yet been established. Connecting.');
+  } catch (error){
+    console.error(error);
   }
 
   try {
@@ -33,7 +25,7 @@ const connectToDB = async () => {
     }
     process.stdout.write('Connected to database');
   } catch (error) {
-    process.stderr.write(error);
+    console.error(error);
   }
 }
 
@@ -46,6 +38,19 @@ const tryDBConnect = async (cb: () => void) => {
     process.exit(1);
   }
 }
+
+
+process
+  .on('unhandledRejection', reason => {
+    const message = `Unhandled Rejection at Promise: ${reason instanceof Error ? reason.message : 'unknow error'}`
+    logError(new ErrorHandler(500, `Unhandled Rejection at Promise: ${message}`));
+    process.exit(1);
+  })
+  .on('uncaughtException', err => {
+    logError(new ErrorHandler(500, `Uncaught Exception: ${err.message}`));
+    process.exit(1);
+  });
+
 
 
 
