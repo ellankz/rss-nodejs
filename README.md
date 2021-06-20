@@ -19,6 +19,8 @@ POSTGRES_PORT=5432
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=postgres
+POSTGRES_HOST=postgres
+PGDATA=/var/lib/postgresql/data/pgdata
 
 ```
 3. Build and run docker containers:
