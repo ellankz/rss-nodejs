@@ -16,9 +16,10 @@
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
     "doc": "./node_modules/.bin/jsdoc -r src",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
-    "migration:generate": "npm run typeorm -- migration:generate --config src/ormconfig.ts --name 'CreateTable'",
-    "migration:create": "npm run typeorm -- migration:create --config src/ormconfig.ts --name 'CreateTable'",
-    "migration:run": "npm run typeorm -- migration:run --config src/ormconfig.ts"
+    "migration:generate": "npm run typeorm -- migration:generate --config src/ormconfig.ts --name 'CreateTable2'",
+    "migration:create": "npm run typeorm -- migration:create --config src/ormconfig.ts --name 'CreateTable2'",
+    "migration:run": "npm run typeorm -- migration:run --config src/ormconfig.ts",
+    "migration:revert": "npm run typeorm -- migration:revert --config src/ormconfig.ts"
   },
   "keywords": [
     "rs",

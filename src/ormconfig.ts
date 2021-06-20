@@ -6,8 +6,6 @@ dotenv.config({
   path: path.join(__dirname, '../.env'),
 });
 
-console.log(process.env)
-
 export const config = {
   type: 'postgres',
   name: 'default',

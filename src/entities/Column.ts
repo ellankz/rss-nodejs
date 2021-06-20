@@ -13,7 +13,7 @@ export class Column {
   @DBColumn('integer')
   order!: number;
 
-  @ManyToOne('Board', 'columns') 
+  @ManyToOne('Board', 'columns', {onDelete: 'CASCADE'}) 
   board!: IBoard; 
 }
 

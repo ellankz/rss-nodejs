@@ -1,32 +1,26 @@
-import { getRepository, getConnection } from "typeorm";
+import { getRepository } from "typeorm";
 import { User } from "../../entities/User";
 
 
 const getAll = async (): Promise<User[]> => {
-  try {
-    const repository = getConnection().getRepository(User);
-    return await repository.find();
-  } catch (error) {
-    console.error( error);
-    const repository = getRepository(User);
-    return await repository.find();
-  }
+  const repository = getRepository(User);
+  return repository.find();
 };
 
 const getOne = async (id: string): Promise<User|undefined> => {
-const repository = getRepository(User);
-return repository.findOne(id);
+  const repository = getRepository(User);
+  return repository.findOne(id);
 }
 
 const createOne = async (userData: Partial<User>): Promise<User> => {
-const repository = getRepository(User);
-const newUser = repository.create(userData);
+  const repository = getRepository(User);
+  const newUser = repository.create(userData);
   return repository.save(newUser);
 };
 
 const updateOne = async (userId: string, userData: Partial<User>): Promise<User|undefined> => {
-const repository = getRepository(User);
-const user = await repository.findOne(userId);
+  const repository = getRepository(User);
+  const user = await repository.findOne(userId);
   if (user) {
     const updateRes = await repository.update(userId, userData)
     return updateRes.raw;
@@ -35,8 +29,8 @@ const user = await repository.findOne(userId);
 };
 
 const deleteOne = async (id: string): Promise<true|undefined> => {
-const repository = getRepository(User);
-const deleteRes = await repository.delete(id);
+  const repository = getRepository(User);
+  const deleteRes = await repository.delete(id);
   if (deleteRes.affected) {
     return true;
   }

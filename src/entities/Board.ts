@@ -12,6 +12,6 @@ export class Board implements IBoard {
   title!: string;
 
   @OneToMany('Column', 'board')
-  columns!: IColumn[];  
+  columns?: IColumn[];  
 }
 
