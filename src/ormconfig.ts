@@ -3,8 +3,10 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 dotenv.config({
-  path: path.join(__dirname, '../../.env'),
+  path: path.join(__dirname, '../.env'),
 });
+
+console.log(process.env)
 
 export const config = {
   type: 'postgres',
@@ -21,5 +23,7 @@ export const config = {
   reconnectTries: Number.MAX_VALUE,
   reconnectionInterval: 1000,
 } as ConnectionOptions;
+
+export const { PORT } = process.env;
 
 export default config;

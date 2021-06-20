@@ -1,14 +1,15 @@
 import { getConnection, createConnection } from 'typeorm';
-import { PORT } from './common/config';
 import app from './app';
 import { logError } from './logging/winston.logger';
 import { ErrorHandler } from './errors/error';
-import { config } from './common/ormconfig';
+import {config, PORT} from './ormconfig';
+
+;
 
 const connectToDB = async () => {
   let connection;
   try {
-    connection = await getConnection();
+    connection = getConnection();
   } catch (error) {
     console.error(error);
   }
@@ -16,10 +17,10 @@ const connectToDB = async () => {
   try {
     if (connection) {
       if (!connection.isConnected) {
-        await connection.connect();
-      } else {
-        createConnection(config);
+        await connection.connect();        
       }
+    } else {
+      connection = await createConnection(config);
     }
     console.log('Connected to database');
   } catch (error) {

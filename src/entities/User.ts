@@ -14,4 +14,9 @@ export class User implements IUser {
   
   @Column('varchar', {length: 50})
   password!: string;
+
+  static toResponse(user: User): Partial<User> {
+    const { id, name, login } = user;
+    return { id, name, login };
+  }
 }
