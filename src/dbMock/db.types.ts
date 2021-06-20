@@ -1,3 +1,3 @@
-export interface dbData<T> {
+export interface DbData<T> {
 	[key: string]: T
 }
