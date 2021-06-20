@@ -34,15 +34,15 @@ npm install ts-node
 ```
 5. Generate migrations. 
 ```
-npm run migrations:generate
+npm run migration:generate
 ```
 6. Run migrations.
 ```
-npm run migrations:run
+npm run migration:run
 ```
 7. Change POSTGRES_HOST in .env to 'postgres'
 ```
-POSTGRES_HOST=localhost
+POSTGRES_HOST=postgres
 ```
 8. Restart docker compose
 ```
