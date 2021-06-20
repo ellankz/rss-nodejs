@@ -19,8 +19,8 @@ const connectToDB = async () => {
   let connection;
   try {
     connection = getConnection();
-  } catch (error) {
-    // console.error(error);
+  } catch {
+    process.stdout.write('Connection hasn\'t yet been established. Connecting.');
   }
 
   try {
@@ -31,9 +31,9 @@ const connectToDB = async () => {
     } else {
       connection = await createConnection(config);
     }
-    console.log('Connected to database');
+    process.stdout.write('Connected to database');
   } catch (error) {
-    console.error(error);
+    process.stderr.write(error);
   }
 }
 
@@ -42,8 +42,8 @@ const tryDBConnect = async (cb: () => void) => {
     await connectToDB();
     cb();
   } catch(error){
-    console.error(error);
-    
+    process.stderr.write(error);
+    process.exit(1);
   }
 }
 
