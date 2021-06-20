@@ -8,7 +8,7 @@ git clone https://github.com/ellankz/rss-nodejs
 cd rss-nodejs
 ```
 ```
-git checkout Task-6-Docker-basics
+git checkout Task-7-PostgreSQL-Typeorm
 ```
 
 2. Create .env file in the project folder with following data:
