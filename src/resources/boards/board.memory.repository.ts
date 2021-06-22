@@ -9,7 +9,7 @@ const getAll = async (): Promise<Board[]> => {
 
 const getOne = async (id: string): Promise<Board | undefined>  => {
   const repository = getRepository(Board);
-  return repository.findOne(id, { relations: ["columns"] });
+  return  repository.findOne(id, { relations: ["columns"] });
 };
 
 const createOne = async (boardData: Partial<Board>): Promise<Board | undefined> => {
@@ -22,7 +22,7 @@ const createOne = async (boardData: Partial<Board>): Promise<Board | undefined> 
     newBoard.columns = await columnRepository.save(newColumns);
   }
   await boardRepository.save(newBoard);
-  return boardRepository.findOne(newBoard.id, { relations: ["columns"] });
+  return await boardRepository.findOne(newBoard.id, { relations: ["columns"] });
 };
 
 const updateOne = async (boardId: string, boardData: Partial<Board>): Promise<Board | undefined> => {
@@ -53,6 +53,7 @@ const updateOne = async (boardId: string, boardData: Partial<Board>): Promise<Bo
 const deleteOne = async (id: string): Promise<true | undefined> => {
   const repository = getRepository(Board);
   const deleteRes = await repository.delete(id);
+  
   if (deleteRes.affected) {
     return true;
   }

@@ -1,5 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
 import { ITask } from "../interfaces/ITask";
+import { Board } from "./Board";
+import { User } from "./User";
 
 @Entity({name: 'task'})
 export class Task implements ITask {
@@ -12,13 +14,21 @@ export class Task implements ITask {
   @Column('integer')
   order!: string;
   
-  @Column('varchar', {length: 200})
+  @Column('varchar', { length: 200 })
   description!: string;
 
-  @Column('uuid', {nullable: true})
-  userId!: string | null;
+  @ManyToOne(() => User, (user) => user.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'userId' })
+  userId: string | null = null;
 
-  @Column('uuid')
+  @ManyToOne(() => Board, (board) => board.id, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'boardId' })
   boardId!: string;
 
   @Column('uuid', {nullable: true})

@@ -14,6 +14,4 @@ export const updateOne = async (boardId: string, taskId: string, taskData: Parti
 
 export const deleteOne = (boardId: string, taskId: string): Promise<true|undefined> => tasksRepo.deleteOne(boardId, taskId);
 
-export const deleteAll = (boardId: string): Promise<true|undefined> => tasksRepo.deleteAll(boardId);
 
-export const deleteUser = (userId: string): Promise<void> => tasksRepo.deleteUser(userId);

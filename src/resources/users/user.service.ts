@@ -1,4 +1,3 @@
-import { deleteUser } from '../tasks/task.service';
 import usersRepo from './user.memory.repository';
 import { User } from '../../entities/User';
 
@@ -10,8 +9,7 @@ export const createOne = (userData: Partial<User>): Promise<User> => usersRepo.c
 
 export const updateOne = async (userId: string, userData: Partial<User>): Promise<User|undefined> => usersRepo.updateOne(userId, userData);
 
-export const deleteOne = async (userId: string):Promise<true|undefined> => {
-  deleteUser(userId);
-  return usersRepo.deleteOne(userId)
-}
+export const deleteOne = async (userId: string):Promise<true|undefined> => 
+   usersRepo.deleteOne(userId)
+
 ;
