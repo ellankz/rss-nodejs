@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { getConnection, createConnection } from 'typeorm';
+import { StatusCodes } from 'http-status-codes';
 import app from './app';
 import { logError } from './logging/winston.logger';
 import { ErrorHandler } from './errors/error';
 import {config, PORT} from './ormconfig';
 import {createOne as createOneUser } from './resources/users/user.service';
-import { authenticate } from './resources/auth/auth.service';
 
 const connectToDB = async () => { 
   let connection;
@@ -54,12 +54,14 @@ process
 
 
   tryDBConnect(async () => {
-    const adminData = { login: 'admin', password: 'admin', name: 'admin' };
     try {
-      await authenticate({login: adminData.login, password: adminData.password});
+      await createOneUser({ login: 'admin', password: 'admin', name: 'admin' });      
     } catch (error) {
-      console.log(error);
-      await createOneUser({ login: 'admin', password: 'admin', name: 'admin' });
+      if (error.statusCode ===  StatusCodes.CONFLICT) {
+        console.error('Admin already exists.'); 
+      } else {
+        console.error(error);
+      }   
     }
     app.listen(PORT, () => console.log(`App is running on http://localhost:${PORT}\n`));
   });
