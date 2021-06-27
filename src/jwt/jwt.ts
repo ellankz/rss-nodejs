@@ -43,7 +43,7 @@ export const checkJWT = async (req: Request, _res: Response, next: NextFunction)
           await verify();
           next();
         } else {
-          throw new ErrorHandler(StatusCodes.FORBIDDEN, ReasonPhrases.FORBIDDEN);
+          throw new ErrorHandler(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED);
         }
       } else {
         throw new ErrorHandler(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR);

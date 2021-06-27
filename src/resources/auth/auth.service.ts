@@ -16,11 +16,11 @@ export const createJWT = async (user: Pick<User, 'id' | 'login'>): Promise<strin
 export const authenticate = async (user: Pick<User, 'login' | 'password'>): Promise<string> => {
   const foundUser = await getOneByLogin(user.login);
   if (!foundUser) {
-    throw new ErrorHandler(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED);
+    throw new ErrorHandler(StatusCodes.FORBIDDEN, ReasonPhrases.FORBIDDEN);
   }
   const userMatch = await foundUser.comparePassword(user.password);
   if (!userMatch) {
-    throw new ErrorHandler(StatusCodes.UNAUTHORIZED, ReasonPhrases.UNAUTHORIZED);
+    throw new ErrorHandler(StatusCodes.FORBIDDEN, ReasonPhrases.FORBIDDEN);
   }
   return createJWT(foundUser);
 };
