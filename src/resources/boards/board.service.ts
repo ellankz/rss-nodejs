@@ -1,5 +1,5 @@
-import { Board } from '../../entities/Board';
-import boardsRepo from './board.memory.repository';
+import { Board } from "./board.entity";
+import boardsRepo from './board.repository';
 import { BoardBody } from './board.types';
 
 export const getAll = (): Promise<Board[]> => boardsRepo.getAll();

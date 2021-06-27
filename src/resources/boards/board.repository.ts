@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm";
-import { Board } from "../../entities/Board";
-import { Column } from "../../entities/Column";
+import { Board } from "./board.entity";
+import { Column } from "./column.entity";
 
 const getAll = async (): Promise<Board[]> => {
   const repository = getRepository(Board);

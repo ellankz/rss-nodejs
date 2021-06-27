@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
-import { ITask } from "../interfaces/ITask";
-import { Board } from "./Board";
-import { User } from "./User";
+import { ITask } from "../../interfaces/ITask";
+import { Board } from "../boards/board.entity";
+import { User } from "../users/user.entity";
 
 @Entity({name: 'task'})
 export class Task implements ITask {

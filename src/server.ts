@@ -4,18 +4,11 @@ import app from './app';
 import { logError } from './logging/winston.logger';
 import { ErrorHandler } from './errors/error';
 import {config, PORT} from './ormconfig';
+import {createOne as createOneUser } from './resources/users/user.service';
 
-
-
-const connectToDB = async () => {
-  let connection;
+const connectToDB = async () => { 
   try {
-    connection = getConnection();
-  } catch (error){
-    console.error(error);
-  }
-
-  try {
+    let connection = getConnection();
     if (connection) {
       if (!connection.isConnected) {
         await connection.connect();        
@@ -54,5 +47,7 @@ process
 
 
 
-  tryDBConnect(() => app.listen(PORT, () => process.stdout.write(`App is running on http://localhost:${PORT}\n`)));
+  tryDBConnect(async () => {
+    app.listen(PORT, () => process.stdout.write(`App is running on http://localhost:${PORT}\n`));
+  });
 

@@ -1,5 +1,5 @@
 import { Entity, Column as DBColumn, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
-import { IBoard } from "../interfaces/IBoard";
+import { IBoard } from "../../interfaces/IBoard";
 
 
 @Entity({name: 'column'})

@@ -1,6 +1,6 @@
 import { Entity, Column as DBColumn, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { IBoard } from "../interfaces/IBoard";
-import { IColumn } from "../interfaces/IColumn";
+import { IBoard } from "../../interfaces/IBoard";
+import { IColumn } from "../../interfaces/IColumn";
 
 
 @Entity({name: 'board'})

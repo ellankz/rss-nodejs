@@ -3,12 +3,12 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { ErrorHandler } from '../../errors/error';
 import { includesAll, includesSome } from '../../helpers/testParamsValid';
 import { logResponse } from '../../logging/winston.logger';
-import { User } from '../../entities/User';
+import { User } from './user.entity';
 import {
   createOne,
   deleteOne,
   getAll,
-  getOne,
+  getOneById,
   updateOne,
 } from './user.service';
 
@@ -51,7 +51,7 @@ router
   .route('/:userId')
   .get(async (req, res, next) => {
     try {
-      const user = await getOne(req.params.userId);
+      const user = await getOneById(req.params.userId);
       if (user) {
         logResponse(res);
         res.json(User.toResponse(user));

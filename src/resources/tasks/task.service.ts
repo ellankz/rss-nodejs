@@ -1,5 +1,5 @@
-import { Task } from '../../entities/Task';
-import tasksRepo from './task.memory.repository';
+import { Task } from './task.entity';
+import tasksRepo from './task.repository';
 
 export const getAll = (boardId: string): Promise<Task[]> => tasksRepo.getAll(boardId);
 
