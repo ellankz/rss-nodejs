@@ -8,7 +8,7 @@ export class Task implements ITask {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column('varchar', {length: 50})
+  @Column('varchar', {length: 255})
   title!: string;
   
   @Column('integer')

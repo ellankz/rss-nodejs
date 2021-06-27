@@ -7,7 +7,7 @@ export class Column {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @DBColumn('varchar', {length: 50})
+  @DBColumn('varchar', {length: 255})
   title!: string;
 
   @DBColumn('integer')

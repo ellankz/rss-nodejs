@@ -8,7 +8,7 @@ export class Board implements IBoard {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @DBColumn('varchar', {length: 50})
+  @DBColumn('varchar', {length: 255})
   title!: string;
 
   @OneToMany('Column', 'board')

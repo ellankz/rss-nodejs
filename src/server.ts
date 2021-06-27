@@ -5,10 +5,16 @@ import { logError } from './logging/winston.logger';
 import { ErrorHandler } from './errors/error';
 import {config, PORT} from './ormconfig';
 import {createOne as createOneUser } from './resources/users/user.service';
+import { authenticate } from './resources/auth/auth.service';
 
 const connectToDB = async () => { 
+  let connection;
   try {
-    let connection = getConnection();
+    connection = getConnection();
+  } catch {
+    console.error('Connection not found. Creating.');
+  }
+  try {
     if (connection) {
       if (!connection.isConnected) {
         await connection.connect();        
@@ -16,7 +22,7 @@ const connectToDB = async () => {
     } else {
       connection = await createConnection(config);
     }
-    process.stdout.write('Connected to database');
+    console.log('Connected to database');
   } catch (error) {
     console.error(error);
   }
@@ -48,7 +54,13 @@ process
 
 
   tryDBConnect(async () => {
-    await createOneUser({ login: 'admin', password: 'admin', name: 'admin' });
-    app.listen(PORT, () => process.stdout.write(`App is running on http://localhost:${PORT}\n`));
+    const adminData = { login: 'admin', password: 'admin', name: 'admin' };
+    try {
+      await authenticate({login: adminData.login, password: adminData.password});
+    } catch (error) {
+      console.log(error);
+      await createOneUser({ login: 'admin', password: 'admin', name: 'admin' });
+    }
+    app.listen(PORT, () => console.log(`App is running on http://localhost:${PORT}\n`));
   });
 

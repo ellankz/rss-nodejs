@@ -9,13 +9,13 @@ export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column('varchar', {length: 50})
+  @Column('varchar', {length: 255})
   name!: string;
   
-  @Column('varchar', {length: 50})
+  @Column('varchar', {length: 255})
   login!: string;
   
-  @Column('varchar', {length: 50})
+  @Column('varchar', {length: 255})
   password!: string;
 
   @BeforeInsert()

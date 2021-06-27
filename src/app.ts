@@ -5,6 +5,7 @@ import path from 'path';
 
 import helmet from 'helmet';
 import cors from 'cors';
+import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import authRouter from './resources/auth/auth.router';
 import userRouter from './resources/users/user.router';
 import boardRouter from './resources/boards/board.router';
@@ -43,8 +44,8 @@ app.use('/boards', taskRouter);
 app.use('/boards', boardRouter);
 
 app.use((err: Error | ErrorHandler, _req: Request, res: Response, next: NextFunction) => {
-  const error = err instanceof ErrorHandler ? err : new ErrorHandler(500, 'Internal server error');
-  logError(error);
+  const error = err instanceof ErrorHandler ? err : new ErrorHandler(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR);
+  logError(error);  
 
   handleError(error, res);
   next(err);

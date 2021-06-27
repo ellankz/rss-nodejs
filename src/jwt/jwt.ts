@@ -20,7 +20,7 @@ export const jwtCreate = async (payload: {userId: string, login: string}): Promi
         });
       })
   
-    const token = await sign();
+    const token = await sign();    
     return token;
   }
   throw new ErrorHandler(StatusCodes.INTERNAL_SERVER_ERROR, ReasonPhrases.INTERNAL_SERVER_ERROR);
