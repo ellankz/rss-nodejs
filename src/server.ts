@@ -48,6 +48,7 @@ process
 
 
   tryDBConnect(async () => {
+    await createOneUser({ login: 'admin', password: 'admin', name: 'admin' });
     app.listen(PORT, () => process.stdout.write(`App is running on http://localhost:${PORT}\n`));
   });
 
