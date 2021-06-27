@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
-import { User } from '../resources/users/user.entity';
 import { ErrorHandler } from '../errors/error';
 
 const secret = process.env['JWT_SECRET_KEY'];
 
-export const jwtCreate = async (payload: Pick<User, 'id' | 'login'>): Promise<string> => {
+export const jwtCreate = async (payload: {userId: string, login: string}): Promise<string> => {
   if (secret) {
     const options = {
       expiresIn: '7d'

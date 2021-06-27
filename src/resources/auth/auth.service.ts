@@ -6,7 +6,7 @@ import { ErrorHandler } from '../../errors/error';
 
 export const createJWT = async (user: Pick<User, 'id' | 'login'>): Promise<string> => {
   const payload = {
-    id: user.id,
+    userId: user.id,
     login: user.login
   };
   const token = await jwtCreate(payload);
