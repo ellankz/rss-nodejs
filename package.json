@@ -8,13 +8,18 @@
   "description": "REST service starter for RS School",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon build/server.js",
+    "start": "node build/server.js",
     "lint": "eslint --ext .js,.ts --fix src/",
     "build": "tsc --build",
-    "dev": "nodemon --exitcrash src/server.ts",
+    "dev": "nodemon -L --exitcrash src/server.ts",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
-    "doc": "./node_modules/.bin/jsdoc -r src"
+    "doc": "./node_modules/.bin/jsdoc -r src",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/.bin/typeorm",
+    "migration:generate": "npm run typeorm -- migration:generate --config src/ormconfig.ts --name 'CreateTable2'",
+    "migration:create": "npm run typeorm -- migration:create --config src/ormconfig.ts --name 'CreateTable2'",
+    "migration:run": "npm run typeorm -- migration:run --config src/ormconfig.ts",
+    "migration:revert": "npm run typeorm -- migration:revert --config src/ormconfig.ts"
   },
   "keywords": [
     "rs",
@@ -50,7 +55,9 @@
     "dotenv": "9.0.0",
     "express": "4.17.1",
     "http-status-codes": "^2.1.4",
+    "pg": "^8.6.0",
     "swagger-ui-express": "4.1.6",
+    "typeorm": "^0.2.34",
     "uuid": "8.3.2",
     "winston": "^3.3.3",
     "yamljs": "0.3.0"

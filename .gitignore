@@ -2,3 +2,5 @@ node_modules
 out
 build
 .env
+db
+log

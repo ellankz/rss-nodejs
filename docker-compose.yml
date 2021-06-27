@@ -2,6 +2,7 @@ version: '3'
 services:
   node:
     build: .
+    command: npm run dev
     image: ellankz/node-app:latest
     ports:
       - ${PORT}:${PORT}
@@ -9,9 +10,14 @@ services:
       - postgres
     environment:
       - PORT=${PORT}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=${POSTGRES_HOST}
     restart: always
     volumes:
-      - ./logs:/usr/app/log/
+      - ./log:/usr/app/log/
       - ./src:/usr/app/src/
     networks:
       - appNetwork
@@ -24,12 +30,11 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: ${PGDATA}
     restart: always
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./database:/var/lib/postgresql/data
     networks:
       - appNetwork
 networks:
   appNetwork:
-volumes:
-  pgdata:

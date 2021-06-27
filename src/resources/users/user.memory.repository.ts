@@ -1,35 +1,40 @@
-import { users } from '../../dbMock/db';
-import User from './user.model';
+import { getRepository } from "typeorm";
+import { User } from "../../entities/User";
 
-const getAll = async (): Promise<User[]> => Object.values(users);
 
-const getOne = async (id: string): Promise<User|null> => {
-  const user = users[id];
-  return user || null;
+const getAll = async (): Promise<User[]> => {
+  const repository = getRepository(User);
+  return repository.find();
 };
 
-const createOne = async (user: User): Promise<User|null> => {
-  if (!users[user.id]) {
-    users[user.id] = user;
-    return user;
+const getOne = async (id: string): Promise<User|undefined> => {
+  const repository = getRepository(User);
+  return repository.findOne(id);
+}
+
+const createOne = async (userData: Partial<User>): Promise<User> => {
+  const repository = getRepository(User);
+  const newUser = repository.create(userData);
+  return repository.save(newUser);
+};
+
+const updateOne = async (userId: string, userData: Partial<User>): Promise<User|undefined> => {
+  const repository = getRepository(User);
+  const user = await repository.findOne(userId);
+  if (user) {
+    const updateRes = await repository.update(userId, userData)
+    return updateRes.raw;
   }
-  return null;
+  return undefined;
 };
 
-const updateOne = async (user: User): Promise<User|null> => {
-  if (users[user.id]) {
-    users[user.id] = user;
-    return user;
-  }
-  return null;
-};
-
-const deleteOne = async (id: string): Promise<true|null> => {
-  if (users[id]) {
-    delete users[id];
+const deleteOne = async (id: string): Promise<true|undefined> => {
+  const repository = getRepository(User);
+  const deleteRes = await repository.delete(id);
+  if (deleteRes.affected) {
     return true;
   }
-  return null;
+  return undefined;
 };
 
 export default {

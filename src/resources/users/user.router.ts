@@ -3,7 +3,7 @@ import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { ErrorHandler } from '../../errors/error';
 import { includesAll, includesSome } from '../../helpers/testParamsValid';
 import { logResponse } from '../../logging/winston.logger';
-import User from './user.model';
+import { User } from '../../entities/User';
 import {
   createOne,
   deleteOne,
