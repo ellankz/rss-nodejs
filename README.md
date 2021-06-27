@@ -31,3 +31,13 @@ docker-compose up
 
 After this the app should be running on port 8080 and be accessible via url http://localhost:8080/
 
+### How to run tests
+
+1. Install dependencies
+```
+npm install
+```
+2. Run tests command
+```
+npm run test:auth
+```
