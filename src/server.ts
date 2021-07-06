@@ -1,20 +1,19 @@
 /* eslint-disable no-console */
 import { getConnection, createConnection } from 'typeorm';
+import { StatusCodes } from 'http-status-codes';
 import app from './app';
 import { logError } from './logging/winston.logger';
 import { ErrorHandler } from './errors/error';
 import {config, PORT} from './ormconfig';
+import {createOne as createOneUser } from './resources/users/user.service';
 
-
-
-const connectToDB = async () => {
+const connectToDB = async () => { 
   let connection;
   try {
     connection = getConnection();
-  } catch (error){
-    console.error(error);
+  } catch {
+    console.error('Connection not found. Creating.');
   }
-
   try {
     if (connection) {
       if (!connection.isConnected) {
@@ -23,7 +22,7 @@ const connectToDB = async () => {
     } else {
       connection = await createConnection(config);
     }
-    process.stdout.write('Connected to database');
+    console.log('Connected to database');
   } catch (error) {
     console.error(error);
   }
@@ -54,5 +53,16 @@ process
 
 
 
-  tryDBConnect(() => app.listen(PORT, () => process.stdout.write(`App is running on http://localhost:${PORT}\n`)));
+  tryDBConnect(async () => {
+    try {
+      await createOneUser({ login: 'admin', password: 'admin', name: 'admin' });      
+    } catch (error) {
+      if (error.statusCode ===  StatusCodes.CONFLICT) {
+        console.error('Admin already exists.'); 
+      } else {
+        console.error(error);
+      }   
+    }
+    app.listen(PORT, () => console.log(`App is running on http://localhost:${PORT}\n`));
+  });
 

@@ -1,14 +1,14 @@
 import { getRepository } from "typeorm";
-import { Task } from "../../entities/Task";
+import { Task } from "./task.entity";
 
 const getAll = async (boardId: string): Promise<Task[]> => {
   const repository = getRepository(Task);
-  return repository.find({ where: { boardId }});
+  return repository.find({ where: { boardId }, loadRelationIds: true });
 };
 
 const getOne = async (boardId: string, taskId: string): Promise<Task | undefined> => {
   const repository = getRepository(Task);
-  return repository.findOne(taskId, { where: { boardId }});
+  return repository.findOne(taskId, { where: { boardId }, loadRelationIds: true });
 };
 
 const createOne = async (boardId: string, task: Partial<Task>): Promise<Task> => {
@@ -36,36 +36,10 @@ const deleteOne = async (_boardId: string, taskId: string): Promise<true | undef
   return undefined;
 };
 
-const deleteAll = async (boardId: string): Promise<true | undefined> => {
-  const repository = getRepository(Task);
-  const toDelete = await repository.find({where: {boardId}});
-  try {
-    const deleted = await Promise.all(toDelete.map(async (task) => {
-      await repository.delete(task.id);
-    }));
-    if (deleted) {
-      return true;
-    }
-  } catch (error) {
-    return undefined;
-  }
-  return undefined;
-};
-
-const deleteUser = async (userId: string): Promise<void> => {
-  const repository = getRepository(Task);
-  const tasks = await repository.find({where: {userId}});
-  await Promise.all(tasks.map(async (task) => {
-    await repository.update(task.id, {...task, userId: null});
-  }));
-};
-
 export default {
   getAll,
   getOne,
   createOne,
   updateOne,
   deleteOne,
-  deleteAll,
-  deleteUser,
 };
