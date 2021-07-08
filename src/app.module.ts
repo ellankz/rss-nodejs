@@ -11,11 +11,14 @@ import configuration from './config/configuration';
 import { BoardsModule } from './boards/boards.module';
 import { Board } from './boards/entities/board.entity';
 import { Column } from './boards/entities/column.entity';
+import { TasksModule } from './tasks/tasks.module';
+import { Task } from './tasks/entities/task.entity';
 
 @Module({
   imports: [
     UsersModule,
     BoardsModule,
+    TasksModule,
     ConfigModule.forRoot({
       load: [configuration],
     }),
@@ -29,7 +32,7 @@ import { Column } from './boards/entities/column.entity';
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
-        entities: [User, Board, Column],
+        entities: [User, Board, Column, Task],
         migrations: [__dirname + 'src/migration/*{.ts,.js}'],
         cli: { migrationsDir: __dirname + 'src/migration' },
         migrationsRun: true,
