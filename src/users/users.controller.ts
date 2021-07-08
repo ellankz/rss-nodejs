@@ -20,11 +20,8 @@ export class UsersController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    const res = User.toResponse(await this.usersService.create(createUserDto));
-    if (!res) {
-      throw new HttpException('Conflict', HttpStatus.CONFLICT);
-    }
-    return res;
+    const user = await this.usersService.create(createUserDto);
+    if (user) return User.toResponse(user);
   }
 
   @Get()
@@ -36,27 +33,21 @@ export class UsersController {
   @Get(':id')
   async findOneById(@Param('id') id: string) {
     const user = await this.usersService.findOneById(id);
-    if (user) {
-      return User.toResponse(user);
-    }
+    if (user) return User.toResponse(user);
     throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const res = await this.usersService.update(id, updateUserDto);
-    if (res) {
-      return res;
-    }
+    if (res) return res;
     throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const res = await this.usersService.remove(id);
-    if (res) {
-      return res;
-    }
+    if (res) return res;
     throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }
 }

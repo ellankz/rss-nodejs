@@ -14,15 +14,8 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const foundUser = await this.usersRepository.findOne({
-      where: { login: createUserDto.login },
-    });
-    if (!foundUser) {
-      const newUser = this.usersRepository.create(createUserDto);
-      return this.usersRepository.save(newUser);
-    } else {
-      return null;
-    }
+    const newUser = this.usersRepository.create(createUserDto);
+    return this.usersRepository.save(newUser);
   }
 
   findAll(): Promise<User[]> {

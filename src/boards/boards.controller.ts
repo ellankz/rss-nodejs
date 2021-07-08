@@ -9,54 +9,45 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { UsersService } from './boards.service';
-import { CreateUserDto } from './dto/create-board.dto';
-import { UpdateUserDto } from './dto/update-board.dto';
-import { User } from './entities/board.entity';
+import { BoardsService } from './boards.service';
+import { CreateBoardDto } from './dto/create-board.dto';
+import { UpdateBoardDto } from './dto/update-board.dto';
 
-@Controller('users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+@Controller('boards')
+export class BoardsController {
+  constructor(private readonly boardsService: BoardsService) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    const res = User.toResponse(await this.usersService.create(createUserDto));
-    if (!res) {
-      throw new HttpException('Conflict', HttpStatus.CONFLICT);
-    }
-    return res;
+  async create(@Body() createBoardDto: CreateBoardDto) {
+    return await this.boardsService.create(createBoardDto);
   }
 
   @Get()
   async findAll() {
-    const users = await this.usersService.findAll();
-    return users.map(User.toResponse);
+    return await this.boardsService.findAll();
   }
 
   @Get(':id')
   async findOneById(@Param('id') id: string) {
-    const user = await this.usersService.findOneById(id);
-    if (user) {
-      return User.toResponse(user);
-    }
+    const board = await this.boardsService.findOne(id);
+    if (board) return board;
     throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    const res = await this.usersService.update(id, updateUserDto);
-    if (res) {
-      return res;
-    }
+  async update(
+    @Param('id') id: string,
+    @Body() updateBoardDto: UpdateBoardDto,
+  ) {
+    const res = await this.boardsService.update(id, updateBoardDto);
+    if (res) return res;
     throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    const res = await this.usersService.remove(id);
-    if (res) {
-      return res;
-    }
+    const res = await this.boardsService.remove(id);
+    if (res) return res;
     throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
   }
 }

@@ -1,51 +1,61 @@
-import { Connection, DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/board.entity';
+import { Board } from './entities/board.entity';
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-board.dto';
-import { UpdateUserDto } from './dto/update-board.dto';
+import { CreateBoardDto } from './dto/create-board.dto';
+import { UpdateBoardDto } from './dto/update-board.dto';
+import { Column } from './entities/column.entity';
 
 @Injectable()
-export class UsersService {
+export class BoardsService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
-    private connection: Connection,
+    @InjectRepository(Board)
+    private boardsRepository: Repository<Board>,
+    @InjectRepository(Column)
+    private columnsRepository: Repository<Column>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const foundUser = await this.usersRepository.findOne({
-      where: { login: createUserDto.login },
+  async create(createBoardDto: CreateBoardDto) {
+    const newBoard = this.boardsRepository.create(createBoardDto);
+    return this.boardsRepository.save(newBoard);
+  }
+
+  findAll(): Promise<Board[]> {
+    return this.boardsRepository.find({ relations: ['columns'] });
+  }
+
+  findOne(id: string): Promise<Board> {
+    return this.boardsRepository.findOne(id, { relations: ['columns'] });
+  }
+
+  async update(id: string, updateBoardDto: UpdateBoardDto) {
+    const oldBoard = await this.boardsRepository.findOne(id, {
+      relations: ['columns'],
     });
-    if (!foundUser) {
-      const newUser = this.usersRepository.create(createUserDto);
-      return this.usersRepository.save(newUser);
-    } else {
-      return null;
+    const { columns = [], title } = updateBoardDto;
+    const deleteResults = oldBoard?.columns?.map((col) =>
+      this.columnsRepository.delete(col.id),
+    );
+    if (deleteResults) {
+      await Promise.all(deleteResults);
     }
-  }
-
-  findAll(): Promise<User[]> {
-    return this.usersRepository.find();
-  }
-
-  findOneById(id: string): Promise<User> {
-    return this.usersRepository.findOne(id);
-  }
-
-  findOneByLogin(login: string): Promise<User> {
-    return this.usersRepository.findOne({ where: { login } });
-  }
-
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.usersRepository.findOne(id);
-    if (user) {
-      return await this.usersRepository.update(id, updateUserDto);
+    const newCols = columns.map((col) => this.columnsRepository.create(col));
+    if (title) {
+      const board = await this.boardsRepository.findOne(id);
+      if (board) {
+        await this.boardsRepository.update(id, { title });
+      }
+    }
+    const board = await this.boardsRepository.findOne(id);
+    await this.columnsRepository.save(newCols);
+    if (board) {
+      board.columns = newCols;
+      return this.boardsRepository.save(board);
     }
     return undefined;
   }
 
   async remove(id: string): Promise<DeleteResult> {
-    return await this.usersRepository.delete(id);
+    return await this.boardsRepository.delete(id);
   }
 }

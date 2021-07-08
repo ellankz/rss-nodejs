@@ -1,5 +1,6 @@
+import { CreateColumnDto } from './create-column.dto';
+
 export class CreateBoardDto {
-  name: string;
-  login: string;
-  password: string;
+  title: string;
+  columns: CreateColumnDto[];
 }

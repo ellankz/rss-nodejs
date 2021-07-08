@@ -1,6 +1,4 @@
-export interface IUser {
+export interface IBoard {
   id: string;
-  name: string;
-  login: string;
-  password: string;
+  title: string;
 }
