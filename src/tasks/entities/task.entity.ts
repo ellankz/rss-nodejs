@@ -18,7 +18,7 @@ export class Task implements ITask {
   title!: string;
 
   @Column('integer')
-  order!: string;
+  order!: number;
 
   @Column('varchar', { length: 200 })
   description!: string;
