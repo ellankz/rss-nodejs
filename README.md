@@ -11,7 +11,6 @@ cd rss-nodejs
 git checkout Task-9
 ```
 
-```
 2. Build and run docker containers:
 ```
 docker-compose up
