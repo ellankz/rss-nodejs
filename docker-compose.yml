@@ -16,6 +16,8 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_HOST=${POSTGRES_HOST}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - USE_FASTIFY=${USE_FASTIFY}
     restart: always
     volumes:
       - ./log:/usr/app/log/
