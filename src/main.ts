@@ -6,7 +6,10 @@ import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './filters/all-exeptions.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const useFastify = process.env['USE_FASTIFY'] === 'true';
+  const app = useFastify
+    ? await NestFactory.create(AppModule, new FastifyAdapter())
+    : await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   const { httpAdapter } = app.get(HttpAdapterHost);
