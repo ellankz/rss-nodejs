@@ -6,9 +6,8 @@ import {
   Param,
   Delete,
   Put,
-  HttpException,
-  HttpStatus,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -37,20 +36,20 @@ export class UsersController {
   async findOneById(@Param('id') id: string) {
     const user = await this.usersService.findOneById(id);
     if (user) return User.toResponse(user);
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    throw new NotFoundException();
   }
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const res = await this.usersService.update(id, updateUserDto);
     if (res) return res;
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    throw new NotFoundException();
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const res = await this.usersService.remove(id);
     if (res) return res;
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    throw new NotFoundException();
   }
 }

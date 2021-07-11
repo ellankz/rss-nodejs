@@ -6,9 +6,8 @@ import {
   Param,
   Delete,
   Put,
-  HttpException,
-  HttpStatus,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -37,7 +36,7 @@ export class TasksController {
   async findOne(@Param('id') id: string, @Param('boardId') boardId: string) {
     const task = await this.tasksService.findOne(boardId, id);
     if (task) return task;
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    throw new NotFoundException();
   }
 
   @Put(':id')
@@ -48,13 +47,13 @@ export class TasksController {
   ) {
     const res = await this.tasksService.update(boardId, id, updateTaskDto);
     if (res) return res;
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    throw new NotFoundException();
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string, @Param('boardId') boardId: string) {
     const res = await this.tasksService.remove(boardId, id);
     if (res) return res;
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    throw new NotFoundException();
   }
 }

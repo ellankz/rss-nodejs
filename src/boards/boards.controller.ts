@@ -6,9 +6,8 @@ import {
   Param,
   Delete,
   Put,
-  HttpException,
-  HttpStatus,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { BoardsService } from './boards.service';
@@ -34,7 +33,7 @@ export class BoardsController {
   async findOneById(@Param('id') id: string) {
     const board = await this.boardsService.findOne(id);
     if (board) return board;
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    throw new NotFoundException();
   }
 
   @Put(':id')
@@ -44,13 +43,13 @@ export class BoardsController {
   ) {
     const res = await this.boardsService.update(id, updateBoardDto);
     if (res) return res;
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    throw new NotFoundException();
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const res = await this.boardsService.remove(id);
     if (res) return res;
-    throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    throw new NotFoundException();
   }
 }

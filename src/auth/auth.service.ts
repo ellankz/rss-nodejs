@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
@@ -24,6 +24,5 @@ export class AuthService {
         token: this.jwtService.sign(payload),
       };
     }
-    throw new HttpException('Unauthorised', HttpStatus.UNAUTHORIZED);
   }
 }
