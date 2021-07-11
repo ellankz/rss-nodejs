@@ -20,8 +20,6 @@ export class User implements IUser {
 
   @BeforeInsert()
   async hashPassword(): Promise<void> {
-    console.log(this, SALT_ROUNDS);
-
     await bcrypt.hash(this.password, SALT_ROUNDS).then((hash) => {
       this.password = hash;
     });
@@ -32,6 +30,8 @@ export class User implements IUser {
     return { id, name, login };
   }
 
-  // public comparePassword = (receivedPassword: string): Promise<boolean> =>
-  //   bcrypt.compare(receivedPassword, this.password);
+  public static comparePassword = (
+    receivedPassword: string,
+    userPassword: string,
+  ): Promise<boolean> => bcrypt.compare(receivedPassword, userPassword);
 }

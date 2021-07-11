@@ -13,9 +13,11 @@ import { Board } from './boards/entities/board.entity';
 import { Column } from './boards/entities/column.entity';
 import { TasksModule } from './tasks/tasks.module';
 import { Task } from './tasks/entities/task.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     UsersModule,
     BoardsModule,
     TasksModule,
