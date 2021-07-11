@@ -18,13 +18,14 @@
     "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
   },
   "dependencies": {
-    "@nestjs/common": "^7.6.15",
+    "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^0.6.3",
-    "@nestjs/core": "^7.6.15",
+    "@nestjs/core": "^8.0.0",
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^8.0.0",
-    "@nestjs/platform-express": "^7.6.15",
+    "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/platform-fastify": "^8.0.1",
     "@nestjs/typeorm": "^7.1.5",
     "bcrypt": "^5.0.1",
     "cross-env": "7.0.3",

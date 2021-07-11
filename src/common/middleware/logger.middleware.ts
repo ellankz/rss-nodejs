@@ -11,15 +11,17 @@ export class LoggerMiddleware implements NestMiddleware {
     response.on('finish', () => {
       const { statusCode } = response;
 
-      this.logger.log(`Request: ${method} ${originalUrl} ${statusCode}`);
-      if (Object.keys(query).length) {
-        this.logger.log(`QUERY`);
-        this.logger.log(query);
+      this.logger.log('----------------------------');
+      this.logger.log(`statusCode: ${statusCode}`);
+      this.logger.log(`method: ${method}`);
+      this.logger.log(`url: ${originalUrl}`);
+      if (body && Object.keys(body).length) {
+      this.logger.log(`body: ${JSON.stringify(body)}`);
       }
-      if (Object.keys(body).length) {
-        this.logger.log(`BODY`);
-        this.logger.log(body);
+      if (query && Object.keys(query).length) {
+        this.logger.log(`query: ${JSON.stringify(query)}`);
       }
+      this.logger.log('----------------------------');
     });
 
     next();
