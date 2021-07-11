@@ -16,7 +16,7 @@ git checkout Task-9
 docker-compose up
 ```
 
-After this the app should be running on port 8080 and be accessible via url http://localhost:8080/
+After this the app should be running on port 7000 and be accessible via url http://localhost:7000/
 
 ### How to run tests
 
