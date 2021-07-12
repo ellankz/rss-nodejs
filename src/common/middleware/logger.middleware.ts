@@ -12,6 +12,7 @@ export class LoggerMiddleware implements NestMiddleware {
       const { statusCode } = response;
 
       this.logger.log('----------------------------');
+      this.logger.log(`Auth ${JSON.stringify(request.headers.authorization)}`);
       this.logger.log(`statusCode: ${statusCode}`);
       this.logger.log(`method: ${method}`);
       this.logger.log(`url: ${originalUrl}`);
